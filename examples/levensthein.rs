@@ -1,8 +1,5 @@
-
+use hnsw_rs::dist::DistLevenshtein;
 use hnsw_rs::prelude::*;
-use hnsw_rs::dist::{DistLevenshtein};
-
-
 
 fn search(word: &str, hns: &Hnsw<u16, DistLevenshtein>, words: &Vec<&str>) {
     let mut vec: Vec<u16> = Vec::new();
@@ -18,12 +15,17 @@ fn search(word: &str, hns: &Hnsw<u16, DistLevenshtein>, words: &Vec<&str>) {
 }
 
 fn main() {
-
     let nb_elem = 500000; // number of possible words in the dictionary
     let max_nb_connection = 15;
     let nb_layer = 16.min((nb_elem as f32).ln().trunc() as usize);
     let ef_c = 200;
-    let hns = Hnsw::<u16, DistLevenshtein>::new(max_nb_connection, nb_elem, nb_layer, ef_c, DistLevenshtein{});
+    let hns = Hnsw::<u16, DistLevenshtein>::new(
+        max_nb_connection,
+        nb_elem,
+        nb_layer,
+        ef_c,
+        DistLevenshtein {},
+    );
     let words = vec!["abcd", "efgh", "ijkl", "abc", "test", "abbdc"];
     let mut i = 0;
     for w in &words {
@@ -35,5 +37,4 @@ fn main() {
         i = i + 1;
     }
     search(&"abcd", &hns, &words);
-
 }
